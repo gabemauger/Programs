@@ -1,4 +1,4 @@
-<project name = "SimpleWebServer">
+<project name = "SimpleWebServer" basedir=".">
     <description>
         Build file for SimpleWebServer
     </description>

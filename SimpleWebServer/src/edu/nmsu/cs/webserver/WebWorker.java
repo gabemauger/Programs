@@ -147,6 +147,25 @@ public class WebWorker implements Runnable
 	}
 
 	/**
+	 * Output an image stream to the client network connection.
+	 *
+	 * @param filePath
+	 * 			is the file path to the image
+ 	 */
+	/**
+	 * Output an image stream to the client network connection.
+	 *
+	 * @param filepath
+	 * 			is the file path to the image
+	 */
+	private void writeImage(String filepath, OutputStream os) throws Exception {
+		InputStream bitLine = new FileInputStream(filepath);
+		int neatByte;
+		while ((neatByte = bitLine.read()) != -1) {
+			os.write(neatByte);
+		}
+	}
+	/**
 	 * Write the data content to the client network connection. This MUST be done after the HTTP
 	 * header has been written out.
 	 * 
@@ -155,31 +174,36 @@ public class WebWorker implements Runnable
 	 **/
 	private void writeContent(OutputStream os) throws Exception
 	{
-		if (filedir == null) {
+		if (filedir == null) {		//404 ERROR
 
 			os.write("<html><head></head><body>\n".getBytes());
 			os.write("<h3>404 Not Found</h3>\n".getBytes());
 			os.write("</body></html>\n".getBytes());
-			System.out.println(filedir + "                <-- This is debugging AGAIN");
 
 		} else{
 
-
+			///////  	//DATE
 			DateFormat date = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 			Date newDate = new Date();
+			///////
 
 			String[] readCharacters = new String[10000];
 			File file = new File(filedir);
 
-			BufferedReader r = new BufferedReader(new FileReader(file));
+			BufferedReader r = new BufferedReader(new FileReader(file)); 	//creates file to output
 
 			for (int count = 0; count < readCharacters.length; count++) {
 				readCharacters[count] = r.readLine();
 				String replaceDate = readCharacters[count].replaceAll("<cs371date>", date.format(newDate));
-				String replaceID = replaceDate.replaceAll("<cs371server>", "Deez Nuts");
+				String replaceID = replaceDate.replaceAll("<cs371server>", "Unity Ensemble");
 				os.write(replaceID.getBytes());
-
 			}
+
+			//writeImage("/Ink.jpg", os);
+
+
+
+			//
 		}
 
 
